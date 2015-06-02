@@ -387,17 +387,8 @@ for servname in dbnames:
  cursor.close()
  connection.close()
 
-POLPRODAPP="192.168.99.11"
-POLPRODAPP1='192.168.99.13'
-POLPRODDB='192.168.99.15'
-POLPRODDB1='192.168.99.17'
-POLDRAPP='192.168.99.141'
-POLDRAPP1='192.168.99.144'
-POLDRDB='192.168.99.145'
-POLDRDB1='192.168.99.148'
 POLUATDB='192.168.99.38'
 
-#hostnames = ['POLPRODAPP','POLPRODAPP1','POLPRODDB','POLPRODDB1','POLDRAPP','POLDRAPP1','POLDRDB','POLDRDB1']
 hostnames = [POLUATDB]
 for servname in hostnames:
  worksheet = workbook.add_worksheet(servname)
