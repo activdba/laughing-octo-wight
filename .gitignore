@@ -1,0 +1,8 @@
+bin/
+*.xlsx
+*.pem
+servcon2.py
+lib/
+include/
+__pycache__/
+
