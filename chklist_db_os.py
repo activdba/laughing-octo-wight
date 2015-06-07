@@ -215,7 +215,6 @@ for majorkey, subdict in output_json.items():
 				if 'created' in dbparameter:
 					cursor.execute(dbparameter)
 					for ro in cursor.fetchone():
-						print("i am executing in db parameteres")
 						worksheet.write_datetime(4, 1, ro,date_format)
 						dbrow=dbrow+1
 				else:
