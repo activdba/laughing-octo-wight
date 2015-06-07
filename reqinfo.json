@@ -1,0 +1,14 @@
+{
+"DBPRIINFO":{"DBNAME1":"PASSWORD1",
+             "DBNAME2":"PASSWORD2"
+            },
+"DBDRINFO":{"DRDBNAME1":"DRDBPASSWD1",
+            "DRDBNAME2":"DRDBPASSWD2"
+           },
+"DBPRICONNDET":{"HOST":"19.16.9.15",
+                "PORT":"1521"
+               },
+"DBDRCONNDET":{"HOST":"19.16.9.14",
+               "PORT":"1521"
+              }
+}
