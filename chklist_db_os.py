@@ -166,7 +166,6 @@ for majorkey, subdict in output_json.items():
 				worksheet.merge_range('D8:E8','DATAPUMP BACKUP STATUS :',merge_format2)
 				worksheet.merge_range('D1:H1','DR SYNC STATUS',merge_format)
 				worksheet.merge_range('D2:D4','SYNC STATUS',merge_format)
-				worksheet.merge_range('F16:K16','MOUNTPOINT SPACE INFORMATION',merge_format)
 				
 				worksheet.write(1, 0, 'DATABASE NAME :',att_format)
 				worksheet.write(2, 0, 'OPEN MODE :',att_format)
@@ -205,13 +204,6 @@ for majorkey, subdict in output_json.items():
 				worksheet.write('G8', 'CLIENT',att_format)
 				worksheet.write('H8', 'SCHEMA_NAME',att_format)
 				worksheet.write('I8', 'STATUS',att_format)
-				
-				worksheet.write('F17', 'FILESYSTEM',att_format)
-				worksheet.write('G17', 'TOTAL SIZE(GB)',att_format)
-				worksheet.write('H17', 'USED(GB)',att_format)
-				worksheet.write('I17', 'FREE(GB)',att_format)
-				worksheet.write('J17', 'USED(%)',att_format)
-				worksheet.write('K17', 'MOUNTED ON',att_format)
 				
 				for dbparameter in dbparameters:
 					if 'created' in dbparameter:
@@ -281,6 +273,50 @@ for majorkey, subdict in output_json.items():
 		
 				cursor.close()
 				connection.close()
+
+for majorkey, hostdetails in output_json.items():
+	if majorkey == 'SERVERINFO':
+		for hostname, hostip in hostdetails.items():
+			worksheetos = workbook.add_worksheet(hostname)
+			worksheetos.set_column('A:A', 15)
+			worksheetos.set_column('B:B', 15)
+			worksheetos.set_column('C:C', 15)
+			worksheetos.set_column('D:D', 15)
+			worksheetos.set_column('E:E', 15)
+			worksheetos.set_column('F:F', 18)
+
+			worksheetos.merge_range('A2:F2','MOUNTPOINT SPACE INFORMATION',merge_format)
+			worksheetos.write('A3','FILESYSTEM',att_format)
+			worksheetos.write('B3','TOTAL SIZE(GB)',att_format)
+			worksheetos.write('C3','USED(GB)',att_format)
+			worksheetos.write('D3','FREE(GB)',att_format)
+			worksheetos.write('E3','USED(%)',att_format)
+			worksheetos.write('F3','MOUNTED ON',att_format)
+
+			client=paramiko.SSHClient()
+			client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+			com="df -gt"
+			k = paramiko.RSAKey.from_private_key_file("pvtkey.pem")
+			client.connect(hostip,22, username='odbadmin', pkey=k)
+			#client.connect(servname,22, username='odbadmin', password='mnbv1234')
+			data=[]
+			stdin, stdout, stderr = client.exec_command(com)
+			print("SSH successful. Closing connection")
+			data.append(stdout.readlines())
+			client.close()
+			print("Connection closed")
+			del data[0][0] # deletes first line which contains header
+			for ocol, data_in_row in enumerate(data):
+			#	print("column is %s" %ocol)
+				for orow, text in enumerate(data_in_row):
+			#		print("row is %s" %orow)
+					text = text.split( ) # splits line into words separated by white space
+					worksheetos.write(orow+3 , ocol , text[0],att_out_format2)
+					worksheetos.write(orow+3 , ocol+1 , text[1],att_out_format)
+					worksheetos.write(orow+3 , ocol+2 , text[2],att_out_format)
+					worksheetos.write(orow+3 , ocol+3 , text[3],att_out_format)
+					worksheetos.write(orow+3 , ocol+4 , text[4],att_out_format)
+					worksheetos.write(orow+3 , ocol+5 , text[5],att_out_format2)
 
 workbook.close()
 print ("EOD BOD Checklist completed")
