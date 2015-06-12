@@ -10,4 +10,8 @@
 "DBDRCONNDET":{"HOST":"19.16.9.14",
                "PORT":"1521"
            	}
+"SERVERINFO":{
+              "DBHOSTNAME":"19.16.9.3"
+              }
+
 }
